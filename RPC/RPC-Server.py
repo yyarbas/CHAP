@@ -13,10 +13,17 @@ server = SimpleXMLRPCServer(("localhost", 8000),
                             requestHandler=RequestHandler)
 server.register_introspection_functions()
 
-with open("C:\\Users\\yarbas\\Downloads\\userAccountData.json") as json_file:
-    data = json.load(json_file)
-    for p in data['accounts']:
-         if p['username'] == 'XXusernameToCheckXX' and  p['password'] == 'XXpasswordToCheckXX'
+def authenticate_user_function(username):
+	with open("C:\\Users\\yarbas\\Downloads\\userAccountData.json") as json_file:
+		data = json.load(json_file)
+		for p in data['accounts']:
+			if p['username'] == username:
+				return true 
+			else: 
+				return false
+			
+
+server.register_function(authenticate_function,'auth')
         
 # Run the server's main loop
 server.serve_forever()
