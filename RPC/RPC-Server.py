@@ -23,7 +23,7 @@ def authenticate_user_function(username):
 				return false
 			
 
-server.register_function(authenticate_function,'auth')
+server.register_function(authenticate_user_function,'auth')
         
 # Run the server's main loop
 server.serve_forever()
