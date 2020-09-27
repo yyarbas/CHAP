@@ -20,4 +20,5 @@ print(token[1])
 password_token = password + token[0]
 password_token_hash = hashlib.md5(password_token.encode('utf-8')).hexdigest()
 if token[1] == password_token_hash:
+   print('1')
 	
