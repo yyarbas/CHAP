@@ -29,7 +29,6 @@ def authenticate_user_function(username):
 	import hashlib
 	import random
 	global random_number
-	#with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
 	with open(os.path.join(sys.path[0], "userAccountData.json"), "r") as json_file:
 		data = json.load(json_file)
 		for account in data['accounts']:
