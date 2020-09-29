@@ -24,6 +24,7 @@ while True:
 		username = input("Username:")
 		password = str(getpass())
 	
+
 		token = server.authenticate(username)
 		password_token = password + token
 		password_token_hash = hashlib.md5(password_token.encode('utf-8')).hexdigest()
