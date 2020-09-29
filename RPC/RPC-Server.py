@@ -3,6 +3,7 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from xmlrpc.server import SimpleXMLRPCRequestHandler
 import json
+import os
 
 import random
 
@@ -28,7 +29,8 @@ def authenticate_user_function(username):
 	import hashlib
 	import random
 	global random_number
-	with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
+	#with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
+	with open(os.path.join(sys.path[0], "userAccountData.json"), "r") as json_file:
 		data = json.load(json_file)
 		for account in data['accounts']:
 			if account['username'] == username:
@@ -39,7 +41,7 @@ def authenticate_user_function(username):
 def authorize_user_funtion(username, password, password_token_hash_client):
 	import hashlib
 	import random
-	with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
+	with open(os.path.join(sys.path[0], "userAccountData.json"), "r") as json_file:
 		data = json.load(json_file)
 		for account in data['accounts']:
 			if account['username'] == username:
