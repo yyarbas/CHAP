@@ -12,7 +12,8 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 
 # Create server
 server = SimpleXMLRPCServer(("localhost", 8000),
-                            requestHandler=RequestHandler)
+                            requestHandler=RequestHandler,
+							allow_none = True)
 server.register_introspection_functions()
 
 server.register_function(pow)
@@ -26,17 +27,33 @@ server.register_instance(MyFuncs())
 def authenticate_user_function(username):
 	import hashlib
 	import random
+	global random_number
 	with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
 		data = json.load(json_file)
 		for account in data['accounts']:
 			if account['username'] == username:
 				random_number = str(random.randrange(1,9999))
-				password = account['password']
-				password_token = password + random_number
-				password_token_hash = hashlib.md5(password_token.encode('utf-8')).hexdigest()
-				return  random_number , password_token_hash
-            
-server.register_function(authenticate_user_function,'auth')
+				
+				return  random_number
+
+def authorize_user_funtion(username, password, password_token_hash_client):
+	import hashlib
+	import random
+	with open('C:\\Users\\yakup\\source\\repos\\yyarbas\\CHAP\\RPC\\userAccountData.json') as json_file:
+		data = json.load(json_file)
+		for account in data['accounts']:
+			if account['username'] == username:
+				if account['password'] == password:
+					password_token = password + random_number
+					password_token_hash_server = hashlib.md5(password_token.encode('utf-8')).hexdigest()
+					if password_token_hash_server ==  password_token_hash_client: 
+						return  1
+					else: 
+						return 0
+
+
+server.register_function(authenticate_user_function,'authenticate')
+server.register_function(authorize_user_funtion,'authorize')
 
 
         
