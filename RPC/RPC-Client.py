@@ -96,4 +96,4 @@ while True:
 		print('\033[4m' + 'Invalid choice!' + '\033[0m' )
 		print('Try Again!')
 		time.sleep(5)
-		break
+		
