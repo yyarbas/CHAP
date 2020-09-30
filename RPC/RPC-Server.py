@@ -25,6 +25,7 @@ class MyFuncs:
 
 server.register_instance(MyFuncs())
 
+#authenticates the User -> Checks if the user is in the json file
 def authenticate_user_function(username):
 	import hashlib
 	import random
@@ -36,21 +37,25 @@ def authenticate_user_function(username):
 				random_number = str(random.randrange(1,9999))
 				
 				return  random_number
+			else:
+			#return 0 incase the username is not registered
+				return str(0)
 
-def authorize_user_funtion(username, password, password_token_hash_client):
+#authenticates the User -> Checks if the user is in the json file
+def authorize_user_funtion(username, password_token_hash_client):
 	import hashlib
 	import random
 	with open(os.path.join(sys.path[0], "userAccountData.json"), "r") as json_file:
 		data = json.load(json_file)
 		for account in data['accounts']:
 			if account['username'] == username:
-				if account['password'] == password:
-					password_token = password + random_number
-					password_token_hash_server = hashlib.md5(password_token.encode('utf-8')).hexdigest()
-					if password_token_hash_server ==  password_token_hash_client: 
-						return  1
-					else: 
-						return 0
+				password = account['password'] 
+				password_token = password + random_number
+				password_token_hash_server = hashlib.md5(password_token.encode('utf-8')).hexdigest()
+				if password_token_hash_server ==  password_token_hash_client: 
+					return  1
+				else: 
+					return 0
 
 
 server.register_function(authenticate_user_function,'authenticate')

@@ -5,10 +5,16 @@ import hashlib
 import time
 from getpass import getpass
 
+#Initialize Server at specified Port
 server = xmlrpc.client.ServerProxy('http://localhost:8000')
 
+#Run in Loop for better usability of the program
 while True:
+	
+	#clears the console
 	print('\033[H\033[J')
+
+	#Menu
 	print(50*'-')
 	print('MENU')
 	print(50*'-')
@@ -16,24 +22,31 @@ while True:
 	print('2. Exit')
 	print(50*'-')
 
+	
 	print('Enter a Number')
 	user_input = input('Your choice: ')
 	if user_input == '1':
 		print("LogIn")
 
+		#Input of User-Credentials
 		username = input("Username:")
 		password = str(getpass())
 	
-
+		#Request of Token for the Username
 		token = server.authenticate(username)
 		password_token = password + token
-		password_token_hash = hashlib.md5(password_token.encode('utf-8')).hexdigest()
-		authorized_successfull = server.authorize(username, password, password_token_hash)
 
-		if authorized_successfull == 1:
+		#hash password and token(random nunmber)
+		password_token_hash = hashlib.md5(password_token.encode('utf-8')).hexdigest()
+		authorized_successful = server.authorize(username, password_token_hash)
+
+		#If the autorization is successful open the premium functions menu
+		if authorized_successful == 1:
 			
 				print('authorized for premium functions')
 				time.sleep(3)
+
+				
 				while(user_input == '1'):
 					print('\033[H\033[J')
 					print('1. Pow')
@@ -69,14 +82,18 @@ while True:
 					user_input = input()
 			
 
-		if authorized_successfull != 1:
-			print('access denied')
-
+		if authorized_successful != 1:
+			print('Username/Password is invalid!')
+			print('Access denied!')
+			time.sleep(5)
+	
+	#Exit the program 
 	elif user_input == '2':
 		exit()
-
+ 
 	else:
 		print('\033[H\033[J') 
 		print('\033[4m' + 'Invalid choice!' + '\033[0m' )
 		print('Try Again!')
-		time.sleep(5)	
+		time.sleep(5)
+		break
